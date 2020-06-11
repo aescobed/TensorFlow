@@ -44,6 +44,8 @@ graph
 
 """
 
+import numpy as np
+
 class Operation():
 
     def __init__(self, input_nodes=[]):
@@ -116,7 +118,7 @@ class Graph():
     def __init__(self):
 
         self.operations = []
-        self.placeholder = []
+        self.placeholders = []
         self.variables = []
 
     def set_as_default(self):
@@ -157,7 +159,7 @@ class Session():
 
     def run(self, operation, feed_dict={}):
 
-        node_postorder = traverse_postorder(operation)
+        nodes_postorder = traverse_postorder(operation)
 
         for node in nodes_postorder:
 
@@ -187,5 +189,26 @@ sess = Session()
 
 result = sess.run(operation=z, feed_dict={x:10})
 
-print(result)
+print("result: ",  result)
+
+
+# new matrix multiplication example
+g = Graph()
+g.set_as_default()
+
+A = Variable([[10,20], [30,40]])
+b = Variable([1,2,])
+
+x = Placeholder()
+
+y =matmul(A,x)
+
+z = add(y,b)
+
+sess = Session()
+
+result = sess.run(operation=z, feed_dict={x:10})
+
+print("result2: ",  result)
+
 
